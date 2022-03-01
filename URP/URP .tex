@@ -1,0 +1,275 @@
+\documentclass[10pt,reqno]{amsart}
+\usepackage{graphicx}
+\graphicspath{ {./urpimages/} }
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsfonts,amssymb,latexsym,amsmath, amsthm}
+\usepackage{tikz-cd}
+\usepackage{mathrsfs}
+\usepackage{comment}
+\excludecomment{confidential}
+\usepackage{enumitem}
+\usepackage{caption}
+\theoremstyle{definition}
+\usepackage[linktocpage=true]{hyperref}
+\usetikzlibrary{arrows,calc,positioning,shadows,shapes}
+%% this allows for theorems which are not automatically numbered
+\newtheorem{defi}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{obs}{Observation}
+\newtheorem{exercise}{Exercise}[section]
+\newcommand{\heg}{\text{Heg}}
+\newtheorem{rem}{Remark}[section]
+\newtheorem{construction}{Construction}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{coro}{Corollary}[section]
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\obj}{obj}
+\DeclareMathOperator{\ext}{Ext}
+\DeclareMathOperator{\tor}{Tor}
+\DeclareMathOperator{\ann}{ann}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\gal}{Gal}
+\DeclareMathOperator{\coker}{coker}
+\newcommand{\degg}{\textup{deg}}
+\newtheorem{ex}{Example}[section]
+\usepackage{hyperref}
+\usepackage{xcolor}
+\definecolor{winered}{rgb}{0.5,0,0}
+%% The above lines are for formatting.  In general, you will not want to change these.
+%%Commands to make life easier
+\newcommand{\RR}{\mathbf R}
+\newcommand{\aff}{\mathbb A}
+\newcommand{\ff}{\mathbb F}
+\newcommand{\cccC}{\mathbf C}
+\newcommand{\oo}{\mathcal{O}}
+\newcommand{\ZZ}{\mathbf Z}
+\newcommand{\pring}{k[x_1, \ldots , x_n]}
+\newcommand{\polyring}{[x_1, \ldots , x_n]}
+\newcommand{\poly}{\sum_{\alpha} a_{\alpha} x^{\alpha}} 
+\newcommand{\ZZn}[1]{\ZZ/{#1}\ZZ}
+\newcommand{\QQ}{\mathbf Q}
+\newcommand{\rr}{\mathbb R}
+\newcommand{\cc}{\mathbb C}
+\newcommand{\complex}{\mathbf {C}_\bullet}
+\newcommand{\nn}{\mathbb N}
+\newcommand{\zz}{\mathbb Z}
+\newcommand{\cat}{\mathbf{C}}
+\newcommand{\ca}{\mathbf}
+\newcommand{\zzn}[1]{\zz/{#1}\zz}
+\newcommand{\qq}{\mathbb Q}
+\newcommand{\calM}{\mathcal M}
+\newcommand{\latex}{\LaTeX}
+\newcommand{\V}{\mathbf V}
+\newcommand{\tex}{\TeX}
+\newcommand{\sm}{\setminus} 
+\newcommand{\dom}{\text{Dom}}
+\newcommand{\lcm}{\text{lcm}}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Hom}{Hom}
+\newcommand{\sym}{\text{Sym}}
+\newcommand{\ord}{\text{ord}}
+\newcommand{\ran}{\text{Ran}}
+\newcommand{\pp}{\prime}
+\newcommand{\gap}{\; \; \;}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\newcommand{\idealp}{\mathfrak{p}}
+\newcommand{\rmod}{\textit{R}-\textbf{Mod}}
+\newcommand{\idealP}{\mathfrak{P}}
+\newcommand{\ideala}{\mathfrak{a}}
+\newcommand{\idealb}{\mathfrak{b}}
+\newcommand{\idealA}{\mathfrak{A}}
+\newcommand{\idealB}{\mathfrak{B}}
+\newcommand{\idealF}{\mathfrak{F}}
+\newcommand{\idealm}{\mathfrak{m}}
+\newcommand{\s}{\mathcal{S}}
+\newcommand{\ccc}{\mathfrak{C}}
+\newcommand{\idealM}{\mathfrak{M}}
+%Itemize gap:
+
+% \pagecolor{black}
+% \color{white}
+% Author info
+
+\title{URP: Homology, and Syzygy }
+\author{Juan Serratos}
+\begin{document}
+\maketitle
+The relative aim of this note is to be a collection of, well, \textit{notes} for an  undergraduate reading project at USC. This collection, as of now, will likely go through a specific review of important linear algebra definition and ideas that directly translate to talking about objects in $R$-$\mathbf{Mod}$—since an $R$ module is a vector space when $R = F$ for some field. The most important aspect of this review, likely, will be the translations that: if $M$ is vector space of dimension $n$, then this translates to $M$ being a \textit{free module of rank $n$} over a ring $R$; if $M$ is a finite dimensional vector space, then this translates to $M$ being a finitely generated module—this one is actually easy; if a subset $A$ of $M$ spans $M$, then this translates to a subset, say, $A$ of $M$ \textit{generates} $M$. Beyond this front, some sort of expositional project is required as presentation and so an account of a syzygy may be good choice, but nothing is fixed as of yet. The actual particular goal of this note is, maybe its only use, is the development of theoretical concepts in (co)homological algebra; we'll likely go through the development of, firstly, homology, hom and tensor, projective, injective, and flat modules, derived functors, commuting homology, and sheaf cohomology (hopefully). We'll start talking about hom and tensor. 
+
+\section{Hom and Tensor}
+This section involves itself with commutative rings (with unit), and if unstated otherwise, you should assume this is true; same goes for modules not being explicitly states as be being ``left." 
+\begin{lemma} If $A, B \in \obj( _R\mathbf{Mod} )$, then the set $\Hom_R (A, B)$ is an abelian group. Moreover, if $p \colon A^\pp \to A$ and $q \colon B \to B^\pp$ are $R$-maps, then 
+\[ (f+g) p = fp + gp  \; \; \;  \text{and} \; \; \; q(f+g) = qf + qg .\]
+\end{lemma} 
+\begin{proof} We'll go through all steps here. Suppose $f, g \in \Hom_R (A, B)$. Then $f \colon A \to B$ and $g \colon A \to B$, with $f, g$ being $R$-maps. Now take some $a \in A$ and we define $(f+g)(a):= f(a) + g(a)$.  So, for some $x, y \in A$, we have $(f+g) (x+y) = f(x+y) + g(x+y) = f(x)+f(y) + g(x)+g(y) =  f(x) + g(x) + f(y) + g(y) = (f+g) (x) + (f+g)(y)$. Similarly, take $a \in A$ and $r \in R$. Then $(f+g) (ra)= f(ra) + g(ra) =r f(a) + rg(a) =  r (f+g)(a)$. We have a constant map $0 \in \Hom_R (A, B)$ defined by $0 \colon a \mapsto 0$ for all $a \in A$. Now, take some $h \in \Hom_R (A, B)$. Then we define the inverse as being $-h \colon A \to B$ such that $-h \colon a \mapsto -[h(a)]$. So, $(h + (-h)) (a) = h(a) - h(a) = h (a-a) = h(0) = 0$. It's routine to notice that addition is associative on this structure. Hence $\Hom_R (A, B)$ is an abelian group; in fact, it is an $R$-module itself. The last equation can be checked by evaluating each on $a \in A$. 
+\end{proof}
+
+Although this abelian group will become more useful to use in later topics, we should turn into another useful and fruitful aspect of $\Hom$: when we make, or consider, $\Hom$ as a functor. 
+\begin{construction}  $\Hom (A, -)$ maps each object $X$ in $\mathcal{C}$ to the set of morphisms, $\Hom (A, X)$, in $\ca{Sets}$; $\Hom(A, -)$ maps each morphism $f \colon X \to Y$ in $\mathbf{C}$ to the map
+\begin{align*}
+\Hom(A, f)& \colon \Hom(A, X) \to \Hom(A, Y) \; \text{given by} \\ 
+\Hom (A, f) \colon &g \mapsto f \circ g \; \text{for each $g \in \Hom (A,X)$}.
+\end{align*} 
+If we want to talk about a $\Hom(A, -)$, then we should first start with some with some objects $X, Y \in \obj(\mathcal{C})$ so that $\varphi \in \Hom(X, Y)$. Then, $\Hom (A, \varphi) := \varphi_\ast \colon \Hom (A, X) \to \Hom (A, Y)$; that is, for $f \in \Hom (A, X)$, we have that the diagram  
+$$\begin{tikzcd}
+A \arrow[rr, "f"] \arrow[rrdd, "\varphi f "'] &  & X \arrow[dd, "\varphi"] \\
+                                     &  &                   \\
+                                     &  & Y                
+\end{tikzcd}$$
+commutes with $\varphi f \in \Hom (A, Y)$ (i.e. for $f \in \Hom (A, X)$, $\varphi_\ast \colon f \mapsto \varphi f$). Now, suppose we have $\psi \colon Y \to Z$, and with that $g \in \Hom (A, Y)$, then we have an induced map $\psi_\ast \colon \Hom (A, Y) \to \Hom (A, Z)$ by $\psi_\ast \colon g \mapsto \psi g$. Moreover, if we want to consider the functor mappings $\varphi_\ast$ and $\psi_\ast$, then, for clarity, consider the diagram 
+$$\begin{tikzcd}
+                   &  & A \arrow[lldd, "f"'] \arrow[rrdd, "h\, = \, \psi g "] \arrow[dd, "g \, = \,  \varphi f"] &  &   \\
+                   &  &                                                        &  &   \\
+X \arrow[rr, "\varphi"'] &  & Y \arrow[rr, "\psi"']                                     &  & Z
+\end{tikzcd}
+$$
+Now, since $\varphi \colon X \to Y$ and $\psi \colon Y \to Z$ are mappings between objects in the locally small category $\mathbf{C}$, then $\Hom (A, -)$ induces a sequence/diagram in $\mathbf{Sets}$, that is, $$\Hom (A, X) \xrightarrow{\varphi_\ast} \Hom(A, Y) \xrightarrow{\psi_\ast} \Hom(A, Z).$$Additionally, in view of associativity, $(\psi \varphi)_\ast \colon f \mapsto (\psi \varphi) f$ in $\Hom (A, Z)$, and, on the other hand, $\psi_\ast \varphi_\ast \colon f \mapsto \varphi f \mapsto \psi (\varphi f) = (\psi \varphi) f$. Thus, associativity holds for the functor-morphism mapping $\Hom (A, -)$., where a morphism from $\mathbf{C}$ is inserted into the functor.  Finally, if $\varphi$ is the identity map $1_X \colon X \to X$, then $(1_X)_\ast \colon f \mapsto 1_X f = f$ for all $f \in \Hom (A, X)$, so that $(1_X)_\ast = 1_{\Hom (A, X)}$
+
+If $\mathbf{C}$ is a category and $B \in \obj (\mathbf{C})$, then the \textbf{contravariant Hom functor} $\Hom (-, B) \colon \mathbf{C} \to \ca{Sets}$ is defined, for all $C \in \obj (\mathbf{C})$, by $\Hom (C, B)$,  and if $f \colon C \to C^\pp$ in $\mathbf{C}$, then $\Hom(f, C) := f^\ast \colon \Hom(C^\pp, B) \to  \Hom (C, B)$ by $f^\ast \colon h \mapsto hf$. We also call $f^\ast$ the \textbf{induced map}. We'll go through the verifying steps for showing that $\Hom (-, B)$ is a functor. Firstly, note that the composite $hf$ makes sense
+$$
+\begin{tikzcd}
+C \arrow[rr, "f"'] \arrow[rrrr, "hf", bend left] &  & C^\pp \arrow[rr, "h"'] &  & B
+\end{tikzcd}
+$$
+Given morphisms $C \xrightarrow{f} C^\pp \xrightarrow{g} C^{\pp \pp}, $
+let us compare functions $(gf)^\ast, f^\ast g^\ast \colon \Hom(C^{\pp \pp}, B) \to \Hom (C,B)$. If $h \in \Hom (C^{\pp \pp}, B)$, i.e. if $h \colon C^{\pp \pp} \to B$, then $
+(gf)^\ast \colon h \mapsto h(gf);$ on the other hand $f^\ast g^\ast \colon h \mapsto hg \mapsto (hg)f = h(gf),$ as desired. Finally, if $f$ is the identity map $1_C \colon C \to C$, then $$ (1_C)^\ast \colon h \mapsto h1_C = h$$ for all $h \in \Hom (C, B)$, so that $(1_C)^\ast = 1_{\Hom(C, B)}$.
+
+\end{construction}
+\begin{defi} 
+Let $M, N, P$ be $R$-modules. A map $\lambda \colon M \times N \to P$ is \textbf{bilinear} if it is linear in each slot separately, i.e. for all $x, x_1, x_2, \in M$, $y, y_1, y_2 \in N$ and $r \in R$: (i) $\lambda (rx_1 + x_2, y) = r\lambda (x_1, y) + \lambda (x_2, y)$; (ii) $\lambda (x, ry_1 + y_2) = r \lambda (x, y_1) + \lambda (x, y_2)$. That is, the map is $R$-linear in each variable. 
+\end{defi}
+
+
+Essentially, the tensor product is a solution to a \textit{universal mapping problem}  since if we have two $R$-modules, say, $M, N$ and there's a bilinear map from $M \times N$ to another $R$-module, $T$, and we also have another bilinear map from $M \times N$ to another $R$-module, $L$, then these maps will induce a \textit{unique} linear map from $T \to L$.  If you were to just simply consider the situation, and also assume that another $R$-module, say, $K$  satisfies the same properties as $T$ in our discussion above, then you would find out, through a pretty normal standard argument, that $K \simeq T$.  Additionally, the good news here is that such an $R$-module like $T$ actually exists! 
+
+
+\begin{defi} The \textbf{tensor product} of two $R$-modules $M, N$ is an $R$-module denoted as $M \otimes_R N$, where $R$ denotes the ring, together with a bilinear map $\otimes \colon (x, y) \mapsto x \otimes y$ from $M \times N$ to $M \otimes_R N$, such that, for every bilinear map $h \colon M \times N \to P$, there is a unique $R$-map $\varphi \colon M \otimes_R N \to P$, such that $h = \varphi \circ \otimes$, that is, $h(x, y) = \varphi (x \otimes y)$ for all $x \in M$ and $y \in N$. Alternatively, this states that if $h$ is bilinear, then there is a unique linear map $\varphi$ that makes the following diagram commute 
+$$\begin{tikzcd}
+M \times N \arrow[rrrr, "\otimes"] \arrow[rrdd, "h"'] &  &   &  & M \otimes_R N \arrow[lldd, "\varphi", dashed] \\
+                                       &  &   &  &                             \\
+                                       &  & P &  &                            
+\end{tikzcd}$$
+\end{defi} 
+If we have the tensor product $M \otimes_R N$, then we should make note that $M \otimes_R N$ is generated by the elements of the form $m \otimes n$, where every $x \in M \otimes_R N$ has the form $$x = \sum_i m_i \otimes n_i .$$ However, we should also note that this expression for $x$ is not unique! Another, perhaps more clear way to talk about the tensor product and its elements, comes from Ravi Vakil, which goes along the lines of: the tensor product $M \otimes_R N$ are finite $R$-linear combinations of symbols $m \otimes n$, where $m \in M$ and $n \in N$ subject to the relations 
+\begin{align*}
+(m_1 + m_2) \otimes n &= m_1 \otimes n + m_2 \otimes n, \\
+m \otimes (n_1 + n_2) &= m \otimes n_1 + m \otimes_n, \\
+r (m \otimes n ) &= am \otimes n = m \otimes an
+\end{align*}
+for $r \in R$, $m_1, m_2 \in M$, and $n_1, n_2 \in N$. 
+
+
+
+
+
+
+
+
+
+
+\section{Conquering Sheaf and Scheme}
+
+As I am completely lacking a lot of topological knowledge, and endlessly lose my past topology notes, this section is going to take a ``top-to-bottom" approach to understand a sheaf. 
+
+Roughly speaking, presheaves (and sheaves) are a way of packaging local information about a topological space $X$ in a way that is mathematically useful. We can imagine that above every open subset $U$ of $X$ there is a “balloon” $\mathcal{F} (U)$ of information about $U$, often a set of functions, and that this information is compatible with restriction; namely if $V$ is another open set contained in $U$, then the balloon of information $\mathcal{F}(V)$ is obtained from $\mathcal{F} (U)$ by some restriction function $\rho_V^U$. 
+\begin{defi} Let $X$ be a topological space and let $\mathbf{C}$ be a category of sets with additional structure, a \textbf{presheaf} on $X$ with values in $\mathbf{C}$ consists of an assignment of some object $\mathcal{F} (U)$ in $\mathbf{C}$ to every open subset $U$ of $X$ and of a map $\mathcal{F} (i) \colon \mathcal{F} (U) \to \mathcal{F} (V)$ of the category of structure in $\mathbf{C}$ to every inclusion $i \colon V \to U$ of open subsets $V \subseteq U \subseteq X$, such that 
+\begin{align*}
+\mathcal{F} (i \circ j)&= \mathcal{F} (j) \circ \mathcal{F} (i) \\
+\mathcal{F} (\id_U) &= \id_{\mathcal{F} (U)}
+\end{align*}
+for any two inclusions $i \colon V \to U$ and $j \colon W \to V$, with $W \subseteq V \subseteq U$. 
+\end{defi} 
+\section{Toward $\ext$ and $\tor$}
+Recall that a functor $T \colon \mathbf{C} \to \mathbf{D}$, where $\mathbf{C}$ and $\mathbf{D}$ are abelian categories—for simplicity, we should think of $\mathbf{Ab}$ and/or $R$-$\mathbf{Mod}$—is said to be \textit{exact} if whenever
+$0 \rightarrow A \rightarrow B \rightarrow C \rightarrow 0 $
+is exact in $\mathbf{C}$, then the sequence $0 \to T(A) \to T(B) \to T(C) \to 0$ is exact in $\mathbf{D}$. Moreover, there are other variations of this sentiment for other cases: $0 \to A \to B \to C$ is \textit{left exact} whenever $0 \to T(A) \to T(B) \to T(C)$ is exact; $A \to B \to C \to 0$ is \textit{right exact} whenever the sequence $T(A) \to T(B) \to T(C) \to 0$ is exact. A similar definition to all that came above can be be given for a contravariant functor but with some of the arrows turned arrow (I'd recommend looking up this analogous construction). The functor $\Hom (-, A)$ is left exact but not exact in general; $\Hom (A, -)$ is left exact but not in general. However, there are instances when $\Hom (A, -)$ and $\Hom (-, A)$ do produce exact sequences: they're called \textit{projective modules} and \textit{injective modules}, respectfully. Similarily, you should start expecting this in other soon to come construction, the functor $- \otimes_R M$ is right exact but not exact in general, although when $- \otimes_R M$ does produce an exact sequence, the module is called \textit{flat}. 
+\section{Background on Modules} If $R$ is a ring, $M$ is an $R$-module and $X \subseteq M$, the submodule generated by $X$ is 
+\[ \langle X \rangle = RX = \bigg \{ \sum_{i =1}^n r_i x_i \colon n \in \zz_{>0}, r_i \in R, x_i \in X \bigg \} . \]
+The expression $\sum_{i=1}^n r_i x_i$ is called an $R$-\textbf{linear combination} of the $x_i$. So $\langle X \rangle$ is the set of all $R$-linear combinations of $X$. When $R =F$ for some field, then we we're dealing with the usual span of a vector space, i.e. $\langle X \rangle = \text{Span} (X)$. If $N \subseteq M$ is a submodule, we say $N$ is \textbf{finitely generated} if $N = \langle X \rangle$ for some finite set $X \subseteq M$. Moreover, if $X = \{x_1, x_2, \ldots, x_N \}$ is finite, then any linear combination of a subset $X$ can be written asa linear combination of the whole set $X$ simply by inserting terms with zero coefficients. That is, 
+\[ \langle x_,1 x_2, \ldots x_N \rangle = \bigg \{ \sum_{i =1}^N r_i x_i \colon r_i \in R \bigg \} .\]
+\begin{defi} Let $M$ be an $R$-module, $X \subseteq M$. We say $X$ is \textbf{linearly independent} if for all $n \in \zz_{>0} $ and distinct $x_1, x_2, \ldots, x_n \in X$, and $r_1, r_2, \ldots, r_n \in R$,
+\[ \sum_{i=1}^n r_i x_i = 0 \implies r_i = 0  \; \; \text{for all i} . \]
+\end{defi} 
+\begin{rem} Let $M$ be an $R$-module. 
+\begin{itemize}
+
+\item[$\bullet$] 
+
+If $X = \{ x_1, x_2, \ldots, x_m \}$ is finite, then $X$ is linearly independent if and only if \[ \sum_{i=1}^m r_i x_i = 0 \implies r_i = 0  \; \; \text{for all i} , \] that is,  we only need consider linear combinations of the entire set. This is because linear combinations of subsets can be viewed as linear combinations of the entire set simply by inserting zero coefficients as necessary.
+
+\item[$\bullet$] An infinite set $X$ is linearly independent if and only if every finite subset is.
+
+\item[$\bullet$] If $0 \in X$, then $X$ is linearly dependent. 
+\end{itemize}
+\end{rem} 
+\begin{defi} Let $R$ be a ring and $M$ an $R$-module. We say that $X \subseteq M$ is a \textbf{basis} for $M$ if $\langle X \rangle = M$, and $X$ is linearly independent. Furthermore, if $M$ has a basis $X$ we say it is \textbf{free} (on $X$). 
+\end{defi}
+\section{So-called Algebras}
+Let $A$ be a (commutative) ring, and let $E$ be a ring that is not necessarily commutative. Recall that the \textbf{center} of $E$ is the set $\{ x \in E \colon rx = xr \; \text{for every $r \in R$} \}$, denoted by $Z(E)$. We have the simple consequence that $Z(E)$ is a commutative subring of $E$, and $Z(E) = E$ if and only if $E$ is a commutative ring. Now, by an \textbf{$A$-algebra} $E$ we mean a ring $E$ with a ring homomorphism $\varphi \colon A \to E $ such that $\varphi(A) \subseteq Z(E)$. This homomorphism $\varphi$ is called the \textbf{structure morphism} of the $A$-algebra. To shorten this description in certain situations, we simply say that $\varphi \colon A \to E$ is an $A$-algebra. Moreover, an $A$-algebra $E$ is said to be \textbf{commutative} if the ring $E$ is commutative—this case is probably what we're most comfortable with. 
+
+
+
+
+\begin{confidential} 
+The construction of homology groups of topological spaces (intuitively, for me, think of $\rr$) has a geometric half and an algebraic half. That is, for each $n \geq 0$, the $n$th homology funtor 
+\[ H_n \colon \mathbf{Top} \to \mathbf{Ab} \]
+is a composite of $\mathbf{Top} \to \mathbf{Ch} (\mathcal{A} ) \to \mathbf{Ab}$, where $\mathcal{A}$ is an abelian category.
+\subsection{Homology functors} 
+\begin{rem} When considering an arbitrary abelian category $\mathcal{A}$ (e.g. $R$-$\mathbf{Mod}$, $\mathbf{Ab}$, $\mathbf{pSh} (X, \mathbf{Ab}) $, etc...) it's easiest to think about the category of abelian groups, i.e. $\mathcal{A} = \mathbf{Ab}$. A \textit{meta theorem} from Rotman's ``Homological Algebra" (pg. 316) gives us that if an assertion for true for $\mathbf{Ab} = \mathcal{A}$, then it will hold true for the other abelian categories. 
+\end{rem} 
+A complex in an abelian category $\mathcal{A}$ is a sequence of morphism (called \textbf{differentials}) 
+$$(C_\bullet, d_\bullet) = \to C_{n+1} \xrightarrow{d_{n+1}}  C_n \xrightarrow{d_n} C_{n-1} \to ,$$
+with the composite of adjacent morphisms being the $0$ map, that is,  $d_n \circ d_{n+1} = 0$ for all $n \in \zz$. We often drop the composition symbol and just write $d_n d_{n+1} = 0$. The object $C_n$ is called an \textit{object in degree $n$}. Although often not usually shown in the literature, this relation gives us the fact that the diagram 
+\[
+\begin{tikzcd}
+C_{n+1} \arrow[rr, "d_{n+1}"] \arrow[rrdd, "0"] &  & C_n \arrow[dd, "d_n"] \\
+                                    &  &                   \\
+                                    &  & C_{n-1}                
+\end{tikzcd}
+\]
+commutes via $0 = d_n d_{n+1}$, where $0$ here denotes the map $0 \colon C_{n+1} \to C_{n-1} $ where $0 \colon x \mapsto 0$ for all $x \in C_{n+1}$. 
+\begin{rem}
+In $R$-$\mathbf{Mod}$, the condition that $d_n d_n{n+1} = 0$ is equivalent to the assertion that $\im (d_{n+1} ) \subseteq \ker (d_n)$. 
+\end{rem}
+
+The category $\mathbf{Ch} (\mathcal{A})$ has as its objects complexes whose terms and modules are in $\mathcal{A}$. As morphisms in $\mathbf{Ch} (\mathcal{A})$, we have chain maps $f = (f_n) \colon (C_\bullet, d_\bullet) \to (C_\bullet^{\prime} , d_\bullet^\prime)$ that make the following diagram commmute
+\[
+\begin{tikzcd}
+{} \arrow[r] & C_{n+1} \arrow[rr, "d_{n+1}"] \arrow[dd, "f_{n+1}"] &  & C_n \arrow[rr, "d"] \arrow[dd, "f_n"] &  & C_{n-1} \arrow[r] \arrow[dd, "f_{n-1}"] & {} \\
+             &                                   &  &                                   &  &                             &    \\
+{} \arrow[r] & C^\prime_{n+1} \arrow[rr, "d^\prime_{n+1}"]                 &  & C_n^{\prime} \arrow[rr, "d^\prime_n"]                 &  & C^\prime_{n-1} \arrow[r]                 & {}
+\end{tikzcd}
+\]
+As composition between chain maps $g = (g_n) $ and $h = (h_n)$, we have $(g_n)(h_n) = (g_n \circ h_n)$—once again, as said above, the composition symbol is often dropped, and we'll be following this convention. 
+
+Recall that a sequence of abelian groups 
+$$A_0 \xrightarrow{d_1} A_1 \xrightarrow{d_2} A_2 \xrightarrow{d_3} \cdots \xrightarrow{d_n} A_n$$ is said to be \textbf{exact at} $A_i$ if $\im (d_i ) = \ker (d_{i+1})$. Additionally, the sequence is said to be \textbf{exact} if it is exact at each $A_i$ for all $1 \leq 1 < n$; that is, the image of each homomorphism is equal to the kernel of the next. 
+
+
+\begin{center}
+\includegraphics[scale = .22]{exact}
+\captionof{figure}{ \small{Illustration of an exact sequence of groups $G_i$ using Venn diagrams. Each group homomorphism $f_i \colon G_{i-1} \to G_i$ maps $G_{i-1}$ to the kernel of the next homomorphism. This is depicted by the reduction of the subgroups from left to right (Wiki ``Exact sequence") } }
+\end{center} 
+
+
+\begin{ex}
+ \begin{itemize} 
+\item[(i)] Every exact sequence is a complex, for the equalities $\im (d_{n+1}) = \ker (d_n)$ imply $d_n d_{n+1} = 0$. 
+\item[(ii)] If $A \in \mathcal{A}$ and $k \in \zz$ is a fixed integer, then the sequence $\eta^k (A)$ whose $k$th term is $\mathcal{A}$, whose other terms are $0$, and whose differentials are zero maps is a complex, is called $A$ \textbf{concentrated in degree $k$}. 
+\end{itemize}
+\end{ex} 
+
+\begin{rem} A \textbf{short exact sequence} (SES) are exact sequences of the form: 
+\[ 0 \to A \xrightarrow{f} B \xrightarrow{h} C \to 0 \] In this case, $f$ is injective and $h$ is surjective; that is, $\ker (f) = 0$ and $\coker (h) = 0$, respectively. Recall that for a map $\varphi \in \Hom_{\mathbf{Ab}} (A, B)$, the quotient module $B/ \im \varphi := \coker (\varphi)$. 
+\end{rem} 
+Short exact sequences appear often in nature and they're also helpful as you can analyze the situation the sequence of objects easily as we have the nice properties of injection and subjectivity. Also, if we were to have a SES of abelian groups, say, 
+$0 \to A_2 \xrightarrow{\varphi} A_1 \xrightarrow{\psi} A_0 \to 0$, then the homology group $ H (X) = \ker( \psi) / \im (\varphi)$, where $X$ denotes the SES, is just the trivial group, $\{ 0 \}$, i.e. $H(X) = 0$. 
+
+Now, similarly, a long exact sequence (LES) is of the form $ 0 \to M_1 \xrightarrow{\partial_1} M_2 \xrightarrow{\partial_2} M_3 \xrightarrow{\partial_3} M_3 \cdots \xrightarrow{\partial_i} M_i \xrightarrow{\partial_{i+1}} $. We can in fact break a LES into a SES. We could rewrite the above as a collection of SES:
+$$  0 \to M_1 \xrightarrow{\partial_1} M_2 \xrightarrow{\partial_2} \im (\partial_2) \to 0$$
+$$0 \to \coker (\partial_2) \xrightarrow{\partial_3} M_4 \xrightarrow{\partial_4} \im (\partial_4) \to 0,$$ and so on.
+\end{confidential} 
+\end{document}
